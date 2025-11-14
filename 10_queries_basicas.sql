@@ -18,11 +18,11 @@
 
 USE locadora;
 
-
+-- ---
 -- Consulta 1: Listagem Simples com Filtro (WHERE) e Ordenação (ORDER BY)
 -- Objetivo: Listar todos os clientes que NÃO moram em 'São Paulo'
 -- (para ver os clientes de teste que inserimos).
-
+-- ---
 SELECT
     nome_completo,
     email,
@@ -39,11 +39,11 @@ WHERE
 ORDER BY
     nome_completo ASC;
 
-
+-- ---
 -- Consulta 2: JOIN entre 3 tabelas com Filtro (WHERE)
 -- Objetivo: Mostrar todas as locações que ainda estão ativas
 -- (sem data de devolução real).
-
+-- ---
 SELECT
     l.id_locacao,
     l.data_retirada,
@@ -60,9 +60,10 @@ WHERE
     l.data_devolucao_real IS NULL;
 -- Resultado esperado: Locação 4 (Japones Liuyji) e 8 (Matheus Geraldi)
 
+-- ---
 -- Consulta 3: Agregação (GROUP BY) com JOIN
 -- Objetivo: Contar quantos veículos da frota pertencem a cada marca.
-
+-- ---
 SELECT
     m.nome_marca,
     COUNT(v.id_veiculo) AS quantidade_de_veiculos
@@ -78,10 +79,11 @@ ORDER BY
     quantidade_de_veiculos DESC;
 -- Resultado esperado: Renault, Volkswagen, BYD, FIAT, BMW (todas com 1)
 
+-- ---
 -- Consulta 4: Agregação (GROUP BY) com Filtro de Grupo (HAVING)
 -- Objetivo: Calcular o valor total já pago por cada cliente,
 -- mostrando apenas os clientes que gastaram mais de R$ 1000,00 no total.
-
+-- ---
 SELECT
     c.nome_completo,
     SUM(p.valor) AS valor_total_gasto
@@ -99,10 +101,11 @@ ORDER BY
     valor_total_gasto DESC;
 -- Resultado esperado: Rodrigo Nantes, Matheus Geraldi, Japones Liuyji, Fabrizio San Felipe
 
+-- ---
 -- Consulta 5: JOIN Múltiplo com Filtros complexos (WHERE ... AND)
 -- Objetivo: Listar detalhes do veículo elétrico (Categoria 'Elétrico')
 -- da marca 'BYD'.
-
+-- ---
 SELECT
     v.placa,
     v.ano,
@@ -123,8 +126,6 @@ WHERE
     cv.nome_categoria = 'Elétrico'
     AND ma.nome_marca = 'BYD';
 -- Resultado esperado: Veículo 4 (Dolphin)
-
-
 
 
 
