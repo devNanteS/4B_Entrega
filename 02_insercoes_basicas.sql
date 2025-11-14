@@ -49,8 +49,6 @@ INSERT INTO categoria_veiculo (id_categoria_veiculo, nome_categoria, valor_diari
 (4, 'Picape', 300.00),
 (5, 'Elétrico', 350.75);
 
--- Bloco 2: Entidades semi-dependentes (Clientes, Funcionários, Modelos)
-
 INSERT INTO endereco (id_endereco, logradouro, numero, complemento, bairro, cidade, estado, cep) VALUES
 (1, 'Rua do Limoeiro', '123', 'Apto 101', 'Centro', 'São Paulo', 'SP', '01001-000'),
 (2, 'Canindé', '1500', 'Sala 502', 'IFSP', 'São Paulo', 'SP', '01310-100'),
