@@ -96,7 +96,7 @@ DELIMITER ;
 
 -- TESTE DA TRIGGER 1 (CNH Vencida - Cenário A)
 
--- Tente inserir uma locação para o Cliente 6 (Joaozin do Erro),
+-- Insira uma locação para o Cliente 6 (Joaozin do Erro),
 -- que tem uma CNH vencida desde 2020.
 
 -- RESULTADO ESPERADO: O comando deve FALHAR e mostrar a
@@ -110,7 +110,7 @@ VALUES
 
 -- TESTE DA TRIGGER 2 (Multa por Atraso - Cenário E)
 
--- 1. Veja o "ANTES": A Locação 8 (Matheus Geraldi) está em aberto.
+-- 1. A Locação 8 (Matheus Geraldi) está em aberto.
 SELECT * FROM locacao WHERE id_locacao = 8;
 -- (valor_final e data_devolucao_real estão NULL)
 
@@ -125,8 +125,7 @@ SET
 WHERE
     id_locacao = 8;
 
--- 3. Veja o "DEPOIS":
--- RESULTADO ESPERADO: A trigger deve ter calculado o novo
+-- 3. RESULTADO ESPERADO: A trigger deve ter calculado o novo
 -- valor_final para R$ 1.920,00 (600 + 120 + 1200).
 
 SELECT * FROM locacao WHERE id_locacao = 8;
