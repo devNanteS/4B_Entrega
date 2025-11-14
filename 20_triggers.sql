@@ -92,3 +92,41 @@ END;
 //
 
 DELIMITER ;
+
+
+-- TESTE DA TRIGGER 1 (CNH Vencida - Cenário A)
+
+-- Tente inserir uma locação para o Cliente 6 (Joaozin do Erro),
+-- que tem uma CNH vencida desde 2020.
+
+-- RESULTADO ESPERADO: O comando deve FALHAR e mostrar a
+-- mensagem de erro: "ERRO: A CNH deste cliente está vencida."
+
+INSERT INTO locacao (data_retirada, data_devolucao_prevista, valor_total_previsto,
+quilometragem_retirada, id_cliente, id_veiculo, id_funcionario)
+VALUES
+('2025-11-05 10:00:00', '2025-11-10 10:00:00', 600.00, 16000, 6, 1, 1);
+
+
+-- TESTE DA TRIGGER 2 (Multa por Atraso - Cenário E)
+
+-- 1. Veja o "ANTES": A Locação 8 (Matheus Geraldi) está em aberto.
+SELECT * FROM locacao WHERE id_locacao = 8;
+-- (valor_final e data_devolucao_real estão NULL)
+
+-- 2. O carro em atraso será devolvido
+-- Previsto: 2025-10-30 10:00:00
+-- Real: 2025-11-01 12:00:00
+
+UPDATE locacao
+SET
+    data_devolucao_real = '2025-11-01 12:00:00',
+    quilometragem_devolucao = 16500
+WHERE
+    id_locacao = 8;
+
+-- 3. Veja o "DEPOIS":
+-- RESULTADO ESPERADO: A trigger deve ter calculado o novo
+-- valor_final para R$ 1.920,00 (600 + 120 + 1200).
+
+SELECT * FROM locacao WHERE id_locacao = 8;
