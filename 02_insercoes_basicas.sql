@@ -72,7 +72,7 @@ INSERT INTO cliente (id_cliente, nome_completo, cpf, data_nascimento, telefone, 
 
 INSERT INTO funcionario (id_usuario, nome, email, senha, id_cargo) VALUES
 (1, 'Pietro di Luca', 'jundiai.atendente@locadora.com', 'hash_senha_123', 1),
-(2, 'Leonardo Nantes', 'gabriela.gerente@locadora.com', 'hash_senha_456', 2),
+(2, 'Leonardo Nantes', 'NanteS.gerente@locadora.com', 'hash_senha_456', 2),
 (3, 'Claudete', 'Claudete.mecanico@locadora.com', 'hash_senha_789', 3),
 (4, 'Leonardo Motta', 'motta.atendente@locadora.com', 'hash_senha_111', 1),
 (5, 'Ricardo Agostinho', 'ricardinho.gerente@locadora.com', 'hash_senha_222', 2);
