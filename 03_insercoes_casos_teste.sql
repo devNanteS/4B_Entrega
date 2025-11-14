@@ -1,19 +1,18 @@
 /*
 ============================================================
-  Arquivo: 10_queries_basicas.sql
+  Arquivo: 03_insercoes_casos_teste.sql
   Autor(es):
-   
-Leonardo Giannoccaro Nantes
-Pietro di Luca Monte Souza Balbino
-Matheus Gonçalves Domingues Geraldi
-Guilherme Liyuji Aoki Uehara
+    Leonardo Giannoccaro Nantes
+    Pietro di Luca Monte Souza Balbino
+    Matheus Gonçalves Domingues Geraldi
+    Guilherme Liyuji Aoki Uehara
 
   Trabalho: Locação de Veículos
   Curso/Turma: DS 213
   SGBD: MySQL Versão: 8.0
-  Objetivo: Consultas (queries) básicas para
-            verificação dos dados inseridos.
-  Execução esperada: rodar após os scripts 01, 02 e 03.
+  Objetivo: Inserção de dados específicos para
+            exercitar regras de negócio e relatórios.
+  Execução esperada: rodar após o 02_insercoes_basicas.sql
 ==========================================================
 */
 
@@ -84,9 +83,6 @@ INSERT INTO locacao (id_locacao, data_retirada, data_devolucao_prevista, data_de
 INSERT INTO pagamento (data_pagamento, valor, id_locacao, id_forma_pagamento) VALUES
 ('2025-10-25 10:05:00', 600.00, 8, 2);
 
--- Como o Veículo 1 (Kwid) estava 'Disponível' (1) e foi alugado acima,
--- seu status deve ser atualizado para 'Alugado' (2) para manter a coerência dos dados.
--- (No futuro, uma trigger de INSERT em 'locacao' poderia fazer isso automaticamente).
 UPDATE veiculo SET id_status_veiculo = 2 WHERE id_veiculo = 1;
 
 
@@ -96,9 +92,6 @@ UPDATE veiculo SET id_status_veiculo = 2 WHERE id_veiculo = 1;
 -- Veículo ID 5 (Hilux), que JÁ ESTÁ ALUGADO (Locação ID 4, do arquivo 02).
 -- A trigger de INSERT em 'locacao' deverá BLOQUEAR esta nova inserção.
 
--- Nenhuns INSERTs são necessários aqui. Os dados do arquivo 02
--- (Locação 4 e Veículo 5, ambos "Alugado") já preparam este cenário.
--- Apenas documentamos que este cenário será testado.
 -- FIM DO SCRIPT
 
 
