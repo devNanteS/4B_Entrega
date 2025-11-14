@@ -21,7 +21,6 @@ USE locadora;
 DELIMITER //
 
 -- Trigger 1: Bloqueio de Locação por CNH Vencida
---
 -- Tabela: locacao
 -- Evento: BEFORE INSERT (Antes de inserir uma nova locação)
 -- O que faz: Verifica se a data de validade da CNH do cliente
