@@ -47,6 +47,7 @@ BEGIN
 END;
 //
 
+DELIMITER // 
 
 -- Trigger 2 Cálculo de Multa por Atraso
 --
@@ -93,7 +94,26 @@ END;
 
 DELIMITER ;
 
+DELIMITER //
 
+-- Trigger 3: Calcula o valor_fracao automaticamente
+-- Tabela: veiculo
+-- Evento: BEFORE INSERT (Antes de inserir um novo veículo)
+-- O que faz: Calcula o valor_fracao com base no tamanho do tanque.
+--
+CREATE TRIGGER trg_calcula_valor_fracao_veiculo
+BEFORE INSERT ON veiculo
+FOR EACH ROW
+BEGIN
+    -- Se o tanque foi informado, calcula a regra de negócio
+    IF NEW.tanque IS NOT NULL AND NEW.tanque > 0 THEN
+        SET NEW.valor_fracao = (NEW.tanque * 6) / 8 + 5;
+    END IF;
+END;
+//
+DELIMITER ;
+
+/*
 -- TESTE DA TRIGGER 1 (CNH Vencida - Cenário A)
 
 -- Tente inserir uma locação para o Cliente 6 (Joaozin do Erro),
@@ -106,8 +126,9 @@ INSERT INTO locacao (data_retirada, data_devolucao_prevista, valor_total_previst
 quilometragem_retirada, id_cliente, id_veiculo, id_funcionario)
 VALUES
 ('2025-11-05 10:00:00', '2025-11-10 10:00:00', 600.00, 16000, 6, 1, 1);
+*/
 
-
+/*
 -- TESTE DA TRIGGER 2 (Multa por Atraso - Cenário E)
 
 -- 1. Veja o "ANTES": A Locação 8 (Matheus Geraldi) está em aberto.
@@ -130,3 +151,17 @@ WHERE
 -- valor_final para R$ 1.920,00 (600 + 120 + 1200).
 
 SELECT * FROM locacao WHERE id_locacao = 8;
+*/
+
+/*
+-- Teste da TRIGGER 3 (Cálculo automático do valor_fracao - Cenário G)
+
+-- Não foram inseridos nenhum valor do valor_fracao para o sistema
+-- Esperado: a trigger deve interferir e calcular automaticamente
+-- Antes : 00.00
+
+-- Verifique o "DEPOIS"
+SELECT id_veiculo, placa, tanque, valor_fracao
+FROM veiculo
+WHERE id_veiculo IN (11, 12);
+*/
