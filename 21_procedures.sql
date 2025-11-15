@@ -107,9 +107,10 @@ END;
 
 DELIMITER ;
 
+
 -- TESTES PARA COMPROVAR O FUNCIONAMENTO
 
-
+/*
 -- TESTE DA PROCEDURE 1 (Registrar Locação)
 -- Tenta alugar o Veículo 2 (Virtus), que está 'Disponível' (ID 1),
 -- para o Cliente 5 (Yuri de Argolo).
@@ -119,9 +120,10 @@ CALL sp_registrar_locacao(5, 2, 1, NOW() + INTERVAL 3 DAY);
 SELECT * FROM locacao ORDER BY id_locacao DESC LIMIT 1;
 SELECT id_veiculo, placa, id_status_veiculo FROM veiculo WHERE id_veiculo = 2;
 
-CALL sp_registrar_locacao(1, 3, 1, NOW() + INTERVAL 2 DAY);
+CALL sp_registrar_locacao(2, 3, 1, NOW() + INTERVAL 2 DAY);
+*/
 
-
+/*
 -- TESTE DA FUNCTION 1 (Calcular Diárias)
 -- Vamos usar a função para calcular as diárias de locações existentes.
 
