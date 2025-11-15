@@ -1,18 +1,9 @@
 /*
 ============================================================
   Arquivo: 90_verificacoes_pos_execucao.sql
-  Autor(es):
-    Leonardo Giannoccaro Nantes
-    Pietro di Luca Monte Souza Balbino
-    Matheus Gonçalves Domingues Geraldi
-    Guilherme Liyuji Aoki Uehara
-
-  Trabalho: Locação de Veículos
-  Curso/Turma: DS 213
-  SGBD: MySQL Versão: 8.0
+  ... (Cabeçalho) ...
   Objetivo: Checagens rápidas para validar a base
             pós-execução de todos os scripts.
-  Execução esperada: rodar por último (antes do reset).
 ==========================================================
 */
 
@@ -22,59 +13,79 @@ USE locadora;
 -- O que comprova: Que todos os scripts de inserção (02 e 03) rodaram.
 
 SELECT 'cliente' AS tabela, COUNT(*) AS total_linhas FROM cliente
-UNION
+UNION ALL
 SELECT 'veiculo' AS tabela, COUNT(*) FROM veiculo
-UNION
+UNION ALL
 SELECT 'locacao' AS tabela, COUNT(*) FROM locacao
-UNION
+UNION ALL
 SELECT 'funcionario' AS tabela, COUNT(*) FROM funcionario
-UNION
-SELECT 'manutencao' AS tabela, COUNT(*) FROM manutencao;
+UNION ALL
+SELECT 'manutencao' AS tabela, COUNT(*) FROM manutencao
+UNION ALL
+SELECT 'endereco' AS tabela, COUNT(*) FROM endereco
+UNION ALL
+SELECT 'seguro' AS tabela, COUNT(*) FROM seguro -- <-- NOVA TABELA
+UNION ALL
+SELECT 'combustivel' AS tabela, COUNT(*) FROM combustivel -- <-- NOVA TABELA
+UNION ALL
+SELECT 'usuario' AS tabela, COUNT(*) FROM usuario; -- <-- NOVA TABELA
 
--- Resultado esperado: cliente (7), veiculo (5), locacao (8), funcionario (5), manutencao (4)
+-- Resultado esperado (aproximado, com base nos scripts):
+-- cliente (7), veiculo (10), locacao (8), funcionario (5), manutencao (5)
+-- endereco (10), seguro (10), combustivel (5), usuario (5)
 
 
 -- Verificação 2: Status da Frota
--- O que comprova: Que os scripts de teste (02, 03) e as
--- procedures (21) atualizaram corretamente o status dos veículos.
+-- O que comprova: Que os scripts de teste (02, 03) definiram os status.
 
 SELECT
-    v.id_veiculo,
-    v.placa,
-    s.descricao_status
+    sv.descricao_status,
+    COUNT(v.id_veiculo) AS quantidade
 FROM veiculo v
-JOIN status_veiculo s ON v.id_status_veiculo = s.id_status_veiculo
-ORDER BY v.id_veiculo;
+JOIN status_veiculo sv ON v.id_status_veiculo = sv.id_status_veiculo
+GROUP BY sv.descricao_status;
 
 -- Resultado esperado:
--- 1 (Kwid): Alugado (pelo Cenário E)
--- 2 (Virtus): Disponível (ou Alugado, se você rodar o teste da SP_Locacao)
--- 3 (X3): Disponível
--- 4 (Dolphin): Em Manutenção (pelo script 02)
--- 5 (Toro): Alugado (pelo script 02)
+-- 1 (Kwid): 'Alugado' (pelo Cenário E)
+-- 2 (Virtus): 'Disponível'
+-- 3 (X3): 'Disponível'
+-- 4 (Dolphin): 'Em Manutenção' (pelo script 02)
+-- 5 (Toro): 'Alugado' (pelo script 02)
+-- 6-10 (Novos): 'Disponível'
+-- TOTAL: Disponível (7), Alugado (2), Em Manutenção (1)
 
 
 -- Verificação 3: Cliente de Teste de CNH (Cenário A)
--- O que comprova: Que o cliente "armadilha" para a
--- trigger 1 está cadastrado corretamente.
-
+-- O que comprova: Que o cliente "armadilha" ('Joaozin do Erro') para a trigger 1 está cadastrado.
 SELECT
     cl.id_cliente,
     cl.nome_completo,
-    c.numero_registro,
     c.data_validade
 FROM cliente cl
 JOIN cnh c ON cl.id_cnh = c.id_cnh
 WHERE cl.nome_completo = 'Joaozin do Erro';
+-- Resultado esperado: 'Joaozin do Erro' com data_validade '2020-01-01'.
 
--- Resultado esperado: Deve mostrar o 'Joaozin do Erro' com data_validade '2020-01-01'.
+-- Verificação 4: Funcionários com Novos Dados
+-- O que comprova: Que os funcionários foram inseridos com endereços e CPFs (colunas novas).
+SELECT
+    f.nome,
+    f.cpf,
+    e.logradouro
+FROM funcionario f
+JOIN endereco e ON f.id_endereco = e.id_endereco;
+-- Resultado esperado: 5 funcionários, cada um com um CPF e um Endereço.
 
--- Verificação 4: Cliente de Teste de Habilitação (Cenário B)
--- O que comprova: Que o cliente "armadilha" para a
--- regra de negócio (não implementada em trigger) está correto.
+-- Verificação 5: Cálculo Automático (Trigger 3)
+-- O que comprova: Que a Trigger 3 ('trg_calcula_valor_fracao_veiculo')
+--               funcionou durante o script 02.
 
-SELECT nome_completo, tempo_habilitacao_anos
-FROM cliente
-WHERE nome_completo = 'Bianca Novata';
+SELECT
+    placa,
+    tanque,
+    valor_fracao,
+    (tanque * 6) / 8 + 5 AS calculo_esperado
+FROM veiculo
+WHERE id_veiculo IN (1, 2, 3, 5, 6, 8, 9, 10); -- (Excluindo elétricos/manutenção)
 
--- Resultado esperado: Deve mostrar 'Bianca Novata' com '1' ano.
+-- Resultado esperado: As colunas 'valor_fracao' e 'calculo_esperado' devem ter valores idênticos (ou muito próximos).
