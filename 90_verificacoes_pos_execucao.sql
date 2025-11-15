@@ -38,8 +38,8 @@ UNION ALL
 SELECT 'usuario' AS tabela, COUNT(*) FROM usuario; -- <-- NOVA TABELA
 
 -- Resultado esperado (aproximado, com base nos scripts):
--- cliente (7), veiculo (10), locacao (8), funcionario (5), manutencao (5)
--- endereco (10), seguro (10), combustivel (5), usuario (5)
+-- cliente (7), veiculo (12), locacao (10), funcionario (5), manutencao (5)
+-- endereco (12), seguro (12), combustivel (5), usuario (5)
 
 
 -- Verificação 2: Status da Frota
