@@ -35,7 +35,8 @@ SELECT
     m.data_entrada,
     m.data_saida,
     m.descricao_servico,
-    m.custo
+    m.custo,
+    m.status
 FROM
     manutencao AS m
 JOIN
@@ -44,6 +45,7 @@ JOIN
     modelo AS mo ON v.id_modelo = mo.id_modelo
 WHERE
     v.placa = 'RBC1A23' -- (Veículo do Cenário C)
+    AND m.status = 'Concluída'
 ORDER BY
     m.data_entrada DESC;
 
@@ -95,28 +97,25 @@ ORDER BY
     valor_total_gasto DESC
 LIMIT 5;
 
-
--- Relatório 3: Visão Geral da Frota (Status e Taxa de Ocupação)
-
+-- Relatório 3: Visão Geral da Frota (com Seguro e Transmissão)
 -- Problema que responde:
--- "Quantos carros temos em cada status (Disponível, Alugado, Manutenção)?
--- E qual a taxa de ocupação da frota?"
-
--- Abordagem:
--- Usamos um JOIN entre 'status_veiculo' e 'veiculo' e agrupamos (GROUP BY)
--- pelo status, contando (COUNT) os veículos em cada um.
--- O (SELECT ... / total_veiculos) é uma SubQuery para calcular o percentual.
+-- "Qual o status da nossa frota e quando vencem os seguros?"
 
 SELECT
+    v.id_veiculo,
+    v.placa,
+    mo.nome_modelo,
     sv.descricao_status,
-    COUNT(v.id_veiculo) AS quantidade_de_veiculos,
-    (COUNT(v.id_veiculo) / (SELECT COUNT(*) FROM veiculo)) * 100 AS porcentagem_da_frota
+    v.transmissao, 
+    s.companhia AS seguradora,
+    s.vencimento AS vencimento_seguro 
 FROM
-    status_veiculo AS sv
+    veiculo AS v
 JOIN
-    veiculo AS v ON sv.id_status_veiculo = v.id_status_veiculo
-GROUP BY
-    sv.id_status_veiculo, sv.descricao_status
+    status_veiculo AS sv ON v.id_status_veiculo = sv.id_status_veiculo
+JOIN
+    modelo AS mo ON v.id_modelo = mo.id_modelo
+JOIN
+    seguro AS s ON v.id_seguro = s.id_seguro
 ORDER BY
-    quantidade_de_veiculos DESC;
-
+    sv.descricao_status, s.vencimento;

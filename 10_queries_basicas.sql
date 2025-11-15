@@ -18,11 +18,10 @@
 
 USE locadora;
 
--- ---
 -- Consulta 1: Listagem Simples com Filtro (WHERE) e Ordenação (ORDER BY)
 -- Objetivo: Listar todos os clientes que NÃO moram em 'São Paulo'
 -- (para ver os clientes de teste que inserimos).
--- ---
+
 SELECT
     nome_completo,
     email,
@@ -39,17 +38,17 @@ WHERE
 ORDER BY
     nome_completo ASC;
 
--- ---
 -- Consulta 2: JOIN entre 3 tabelas com Filtro (WHERE)
 -- Objetivo: Mostrar todas as locações que ainda estão ativas
 -- (sem data de devolução real).
--- ---
+
 SELECT
     l.id_locacao,
     l.data_retirada,
     l.data_devolucao_prevista,
     c.nome_completo AS nome_do_cliente,
-    v.placa AS placa_do_veiculo
+    v.placa AS placa_do_veiculo,
+    v.transmissao
 FROM
     locacao AS l
 JOIN
@@ -60,10 +59,9 @@ WHERE
     l.data_devolucao_real IS NULL;
 -- Resultado esperado: Locação 4 (Japones Liuyji) e 8 (Matheus Geraldi)
 
--- ---
 -- Consulta 3: Agregação (GROUP BY) com JOIN
 -- Objetivo: Contar quantos veículos da frota pertencem a cada marca.
--- ---
+
 SELECT
     m.nome_marca,
     COUNT(v.id_veiculo) AS quantidade_de_veiculos
@@ -77,13 +75,12 @@ GROUP BY
     m.nome_marca
 ORDER BY
     quantidade_de_veiculos DESC;
--- Resultado esperado: Renault, Volkswagen, BYD, FIAT, BMW (todas com 1)
+-- Resultado esperado: Renault, Volkswagen, BYD, FIAT, BMW
 
--- ---
 -- Consulta 4: Agregação (GROUP BY) com Filtro de Grupo (HAVING)
 -- Objetivo: Calcular o valor total já pago por cada cliente,
 -- mostrando apenas os clientes que gastaram mais de R$ 1000,00 no total.
--- ---
+
 SELECT
     c.nome_completo,
     SUM(p.valor) AS valor_total_gasto
@@ -101,31 +98,31 @@ ORDER BY
     valor_total_gasto DESC;
 -- Resultado esperado: Rodrigo Nantes, Matheus Geraldi, Japones Liuyji, Fabrizio San Felipe
 
--- ---
+
 -- Consulta 5: JOIN Múltiplo com Filtros complexos (WHERE ... AND)
 -- Objetivo: Listar detalhes do veículo elétrico (Categoria 'Elétrico')
 -- da marca 'BYD'.
--- ---
+
 SELECT
+	mo.nome_modelo,
+	ma.nome_marca,
     v.placa,
     v.ano,
     v.cor,
     v.quilometragem,
-    mo.nome_modelo,
-    ma.nome_marca,
-    cv.nome_categoria
+    c.tipo_combustivel
 FROM
     veiculo AS v
 JOIN
     modelo AS mo ON v.id_modelo = mo.id_modelo
 JOIN
-    marca AS ma ON mo.id_marca = ma.id_marca
+    combustivel AS c ON v.id_combustivel = c.id_combustivel
 JOIN
-    categoria_veiculo AS cv ON mo.id_categoria_veiculo = cv.id_categoria_veiculo
+    marca AS ma ON mo.id_marca = ma.id_marca
+
 WHERE
-    cv.nome_categoria = 'Elétrico'
-    AND ma.nome_marca = 'BYD';
--- Resultado esperado: Veículo 4 (Dolphin)
+	ma.nome_marca = 'BYD';
+-- Resultado esperado: Veículo 4 (Dolphin), Veículo 7 (Seal) e Veículo 12 (Seal).
 
 
 

@@ -21,8 +21,6 @@ USE locadora;
 -- CENÁRIO A: Cliente com CNH vencida
 -- Objetivo: Testar o bloqueio (via Trigger) de novas locações.
 
--- (IDs 6 e 7 são usados aqui para não conflitarem com os 5 básicos)
-
 INSERT INTO endereco (id_endereco, logradouro, numero, complemento, bairro, cidade, estado, cep) VALUES
 (11, 'Rua da Validade', '999', NULL, 'Documentos', 'Recife', 'PE', '50010-000');
 
@@ -30,7 +28,7 @@ INSERT INTO cnh (id_cnh, numero_registro, categoria, data_validade) VALUES
 (6, '98765432100', 'B', '2020-01-01'); -- Data de validade no passado
 
 INSERT INTO cliente (id_cliente, nome_completo, cpf, data_nascimento, telefone, email, tempo_habilitacao_anos, id_endereco, id_cnh) VALUES
-(6, 'Joaozin do Erro', '666.666.666-66', '1980-01-01', '(81) 96666-6666', 'safado@gov.com', 25, 6, 6);
+(6, 'Joaozin do Erro', '666.666.666-66', '1980-01-01', '(81) 96666-6666', 'safado@gov.com', 25, 11, 6);
 
 -- CENÁRIO B: Cliente com tempo de habilitação insuficiente
 -- Objetivo: Testar a regra de negócio (não-trigger) de bloqueio.
@@ -42,7 +40,7 @@ INSERT INTO cnh (id_cnh, numero_registro, categoria, data_validade) VALUES
 (7, '87654321099', 'B', '2030-12-31'); -- CNH válida
 
 INSERT INTO cliente (id_cliente, nome_completo, cpf, data_nascimento, telefone, email, tempo_habilitacao_anos, id_endereco, id_cnh) VALUES
-(7, 'Bianca Novata', '777.777.777-77', '2003-05-10', '(41) 97777-7777', 'bbianca@email.com', 1, 7, 7); -- Apenas 1 ano de CNH
+(7, 'Bianca Novata', '777.777.777-77', '2003-05-10', '(41) 97777-7777', 'bbianca@email.com', 1, 12, 7); -- Apenas 1 ano de CNH
 
 -- CENÁRIO C: Veículo com histórico extenso de manutenção (para Relatório)
 -- Objetivo: Popular dados para o Relatório de Histórico de Veículo
@@ -96,7 +94,7 @@ INSERT INTO seguro (id_seguro, companhia, vencimento) VALUES
 -- O valor_fracao = 0.00 será sobrescrito pela TRIGGER
 INSERT INTO veiculo (id_veiculo, placa, ano, cor, chassi, quilometragem, transmissao, data_compra, valor_compra, data_vencimento, tanque, tanque_fracao, valor_fracao, id_modelo, id_status_veiculo, id_combustivel, id_seguro
 ) VALUES (
-    11, 'TESTE1A11', 2025, 'Roxo', '9BWZ_TESTE_TRIGGER_1', 10, 'Manual', '2025-11-15', 80000.00, '2026-11-15', 40, 1.0, 0.00,
+    11, 'TEST1A11', 2025, 'Roxo', '9BWZTESTETRIGGER1', 10, 'Manual', '2025-11-15', 80000.00, '2026-11-15', 40, 1.0, 0.00,
     -- Tanque=40, valor_fracao=0 (Trigger deve corrigir) 
     6, 1, 3, 11 -- (Modelo 6-Uno, Status 1-Disp, Comb 3-Flex, Seguro 11)
 );
@@ -104,9 +102,15 @@ INSERT INTO veiculo (id_veiculo, placa, ano, cor, chassi, quilometragem, transmi
 -- Inserindo Veículo 12 (Tanque 60L)
 -- O valor_fracao = 0.00 será sobrescrito pela TRIGGER
 
-INSERT INTO veiculo (id_veiculo, placa, ano, cor, chassi, quilometragem, transmissao, data_compra, valor_compra, data_vencimento, tanque, tanque_fracao, valor_fracao, id_modelo, id_status_veiculo, id_combustivel, id_seguro ) VALUES 
-  ( 12, 'TESTE2B22', 2025, 'Verde', '9BWZ_TESTE_TRIGGER_2', 10, 'Automático', '2025-11-15', 290000.00, '2026-11-15', 60, 1.0, 0.00, 
-  -- Tanque=60, valor_fracao=0 (Trigger deve corrigir)
+INSERT INTO veiculo (
+    id_veiculo, placa, ano, cor, chassi, quilometragem,
+    transmissao, data_compra, valor_compra, data_vencimento,
+    tanque, tanque_fracao, valor_fracao,
+    id_modelo, id_status_veiculo, id_combustivel, id_seguro
+) VALUES (
+    12, 'TEST2B22', 2025, 'Verde', '9BWZTESTETRIGGER2', 10,
+    'Automático', '2025-11-15', 290000.00, '2026-11-15',
+    60, 1.0, 0.00, -- Tanque=60, valor_fracao=0 (Trigger deve corrigir)
     7, 1, 5, 12 -- (Modelo 7-Seal, Status 1-Disp, Comb 5-Elétrico, Seguro 12)
 );
 
