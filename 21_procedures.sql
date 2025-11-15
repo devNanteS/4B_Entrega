@@ -112,8 +112,8 @@ DELIMITER ;
 
 /*
 -- TESTE DA PROCEDURE 1 (Registrar Locação)
--- Tenta alugar o Veículo 2 (Virtus), que está 'Disponível' (ID 1),
--- para o Cliente 5 (Yuri de Argolo).
+-- Tenta alugar o Veículo 2 (Virtus), que está 'Disponível' (ID 1), para o Cliente 5 (Yuri de Argolo).
+-- Aluga o Veículo 3 (X3), que está disponível (ID 1), para o Cliente 2 ().
 
 CALL sp_registrar_locacao(5, 2, 1, NOW() + INTERVAL 3 DAY);
 
@@ -121,6 +121,10 @@ SELECT * FROM locacao ORDER BY id_locacao DESC LIMIT 1;
 SELECT id_veiculo, placa, id_status_veiculo FROM veiculo WHERE id_veiculo = 2;
 
 CALL sp_registrar_locacao(2, 3, 1, NOW() + INTERVAL 2 DAY);
+
+SELECT * FROM locacao ORDER BY id_locacao DESC LIMIT 1;
+SELECT id_veiculo, placa, id_status_veiculo FROM veiculo WHERE id_veiculo = 3;
+
 */
 
 /*
