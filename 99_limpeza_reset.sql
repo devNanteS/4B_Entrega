@@ -16,6 +16,5 @@
 ==========================================================
 */
 
-use locadora;
 DROP DATABASE IF EXISTS locadora;
 SELECT 'Banco de dados "locadora" removido com sucesso.' AS Resultado;
