@@ -113,7 +113,7 @@ DELIMITER ;
 /*
 -- TESTE DA PROCEDURE 1 (Registrar Locação)
 -- Tenta alugar o Veículo 2 (Virtus), que está 'Disponível' (ID 1), para o Cliente 5 (Yuri de Argolo).
--- Aluga o Veículo 3 (X3), que está disponível (ID 1), para o Cliente 2 ().
+-- Aluga o Veículo 3 (X3), que está disponível (ID 1), para o Cliente 2 (Matheus Geraldi).
 
 CALL sp_registrar_locacao(5, 2, 1, NOW() + INTERVAL 3 DAY);
 
