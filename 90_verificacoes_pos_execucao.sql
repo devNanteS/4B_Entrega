@@ -1,7 +1,14 @@
 /*
 ============================================================
   Arquivo: 90_verificacoes_pos_execucao.sql
-  ... (Cabeçalho) ...
+  Autor(es):
+    Leonardo Giannoccaro Nantes
+    Pietro di Luca Monte Souza Balbino
+    Matheus Gonçalves Domingues Geraldi
+    Guilherme Liyuji Aoki Uehara
+  Trabalho: Locação de Veículos
+  Curso/Turma: DS 213
+  SGBD: MySQL Versão: 8.0
   Objetivo: Checagens rápidas para validar a base
             pós-execução de todos os scripts.
 ==========================================================
