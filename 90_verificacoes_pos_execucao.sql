@@ -59,7 +59,8 @@ GROUP BY sv.descricao_status;
 -- 4 (Dolphin): 'Em Manutenção' (pelo script 02)
 -- 5 (Toro): 'Alugado' (pelo script 02)
 -- 6-10 (Novos): 'Disponível'
--- TOTAL: Disponível (7), Alugado (2), Em Manutenção (1)
+-- 11-12 (carros do teste da valor_combustivel) : 'Alugado' ( para o Cenário G )
+-- TOTAL: Disponível (7), Alugado (4), Em Manutenção (1)
 
 
 -- Verificação 3: Cliente de Teste de CNH (Cenário A)
