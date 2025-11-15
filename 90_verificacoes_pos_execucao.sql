@@ -31,11 +31,11 @@ SELECT 'manutencao' AS tabela, COUNT(*) FROM manutencao
 UNION ALL
 SELECT 'endereco' AS tabela, COUNT(*) FROM endereco
 UNION ALL
-SELECT 'seguro' AS tabela, COUNT(*) FROM seguro -- <-- NOVA TABELA
+SELECT 'seguro' AS tabela, COUNT(*) FROM seguro 
 UNION ALL
-SELECT 'combustivel' AS tabela, COUNT(*) FROM combustivel -- <-- NOVA TABELA
+SELECT 'combustivel' AS tabela, COUNT(*) FROM combustivel 
 UNION ALL
-SELECT 'usuario' AS tabela, COUNT(*) FROM usuario; -- <-- NOVA TABELA
+SELECT 'usuario' AS tabela, COUNT(*) FROM usuario; 
 
 -- Resultado esperado (aproximado, com base nos scripts):
 -- cliente (7), veiculo (12), locacao (10), funcionario (5), manutencao (5)
@@ -75,7 +75,7 @@ WHERE cl.nome_completo = 'Joaozin do Erro';
 -- Resultado esperado: 'Joaozin do Erro' com data_validade '2020-01-01'.
 
 -- Verificação 4: Funcionários com Novos Dados
--- O que comprova: Que os funcionários foram inseridos com endereços e CPFs (colunas novas).
+-- O que comprova: Que os funcionários foram inseridos com endereços e CPFs.
 SELECT
     f.nome,
     f.cpf,
