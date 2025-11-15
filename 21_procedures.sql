@@ -142,4 +142,5 @@ FROM
     locacao
 WHERE
     id_locacao IN (4, 5, 8);
+-- Arrendoda os dias para cima, para poder cobrar possíveis multas com mais facilidade.
 */
