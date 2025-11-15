@@ -164,4 +164,5 @@ SELECT * FROM locacao WHERE id_locacao = 8;
 SELECT id_veiculo, placa, tanque, valor_fracao
 FROM veiculo
 WHERE id_veiculo IN (11, 12);
+-- Esperado : id 11 = 35.00 // id 12 = 50.00
 */
