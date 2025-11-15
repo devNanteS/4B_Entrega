@@ -104,15 +104,9 @@ INSERT INTO veiculo (id_veiculo, placa, ano, cor, chassi, quilometragem, transmi
 -- Inserindo Veículo 12 (Tanque 60L)
 -- O valor_fracao = 0.00 será sobrescrito pela TRIGGER
 
-INSERT INTO veiculo (
-    id_veiculo, placa, ano, cor, chassi, quilometragem,
-    transmissao, data_compra, valor_compra, data_vencimento,
-    tanque, tanque_fracao, valor_fracao,
-    id_modelo, id_status_veiculo, id_combustivel, id_seguro
-) VALUES (
-    12, 'TESTE2B22', 2025, 'Verde', '9BWZ_TESTE_TRIGGER_2', 10,
-    'Automático', '2025-11-15', 290000.00, '2026-11-15',
-    60, 1.0, 0.00, -- Tanque=60, valor_fracao=0 (Trigger deve corrigir)
+INSERT INTO veiculo (id_veiculo, placa, ano, cor, chassi, quilometragem, transmissao, data_compra, valor_compra, data_vencimento, tanque, tanque_fracao, valor_fracao, id_modelo, id_status_veiculo, id_combustivel, id_seguro ) VALUES 
+  ( 12, 'TESTE2B22', 2025, 'Verde', '9BWZ_TESTE_TRIGGER_2', 10, 'Automático', '2025-11-15', 290000.00, '2026-11-15', 60, 1.0, 0.00, 
+  -- Tanque=60, valor_fracao=0 (Trigger deve corrigir)
     7, 1, 5, 12 -- (Modelo 7-Seal, Status 1-Disp, Comb 5-Elétrico, Seguro 12)
 );
 
