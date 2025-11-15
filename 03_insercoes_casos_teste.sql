@@ -67,7 +67,6 @@ INSERT INTO pagamento (data_pagamento, valor, id_locacao, id_forma_pagamento) VA
 ('2025-02-01 08:05:00', 361.00, 6, 1),
 ('2025-07-10 12:05:00', 1750.00, 7, 3);
 
--- ---
 -- CENÁRIO E: Locação ativa para Teste de Trigger (Cálculo de Atraso/Multa)
 -- Objetivo: Preparar uma locação ativa (ID 8) para ser usada no arquivo 20_triggers.sql.
 
@@ -84,5 +83,39 @@ UPDATE veiculo SET id_status_veiculo = 2 WHERE id_veiculo = 1;
 -- Objetivo: Preparar dados para o arquivo 21_procedures.sql.
 -- (O Veículo 5 - Toro - já está 'Alugado' (Status 2) pelo script 02,
 -- então ele está pronto para o teste de falha da procedure.)
+
+-- CENÁRIO G : Teste da função da fração de combustível (Trigger 3)
+-- Objetivo : preparar dados para o arquivo 20_triggers.sql.alter
+
+-- Adiciona seguros 11 e 12 para os carros de teste
+INSERT INTO seguro (id_seguro, companhia, vencimento) VALUES
+(11, 'Porto Seguro', '2027-08-01'),
+(12, 'Allianz', '2027-09-01');
+
+-- Inserindo Veículo 11 (Tanque 40L)
+-- O valor_fracao = 0.00 será sobrescrito pela TRIGGER
+INSERT INTO veiculo (id_veiculo, placa, ano, cor, chassi, quilometragem, transmissao, data_compra, valor_compra, data_vencimento, tanque, tanque_fracao, valor_fracao, id_modelo, id_status_veiculo, id_combustivel, id_seguro
+) VALUES (
+    11, 'TESTE1A11', 2025, 'Roxo', '9BWZ_TESTE_TRIGGER_1', 10, 'Manual', '2025-11-15', 80000.00, '2026-11-15', 40, 1.0, 0.00,
+    -- Tanque=40, valor_fracao=0 (Trigger deve corrigir) 
+    6, 1, 3, 11 -- (Modelo 6-Uno, Status 1-Disp, Comb 3-Flex, Seguro 11)
+);
+
+-- Inserindo Veículo 12 (Tanque 60L)
+-- O valor_fracao = 0.00 será sobrescrito pela TRIGGER
+
+INSERT INTO veiculo (
+    id_veiculo, placa, ano, cor, chassi, quilometragem,
+    transmissao, data_compra, valor_compra, data_vencimento,
+    tanque, tanque_fracao, valor_fracao,
+    id_modelo, id_status_veiculo, id_combustivel, id_seguro
+) VALUES (
+    12, 'TESTE2B22', 2025, 'Verde', '9BWZ_TESTE_TRIGGER_2', 10,
+    'Automático', '2025-11-15', 290000.00, '2026-11-15',
+    60, 1.0, 0.00, -- Tanque=60, valor_fracao=0 (Trigger deve corrigir)
+    7, 1, 5, 12 -- (Modelo 7-Seal, Status 1-Disp, Comb 5-Elétrico, Seguro 12)
+);
+
+
 
 -- FIM DO SCRIPT
