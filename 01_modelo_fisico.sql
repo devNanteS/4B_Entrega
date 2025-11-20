@@ -176,11 +176,11 @@ CREATE TABLE IF NOT EXISTS locacao (
     quilometragem_devolucao   INT NULL,
     id_cliente                INT NOT NULL,
     id_veiculo                INT NOT NULL,
-    id_usuario                INT NOT NULL,
+    id_funcionario            INT NOT NULL,
     PRIMARY KEY (id_locacao),
     FOREIGN KEY (id_cliente) REFERENCES cliente(id_cliente),
     FOREIGN KEY (id_veiculo) REFERENCES veiculo(id_veiculo),
-    FOREIGN KEY (id_usuario) REFERENCES funcionario(id_usuario) 
+    FOREIGN KEY (id_funcionario) REFERENCES funcionario(id_usuario) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS forma_pagamento (
